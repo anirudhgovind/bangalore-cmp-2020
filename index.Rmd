@@ -37,7 +37,7 @@ d-title {
   This website is still a work-in-progress and may not show accurate or complete information!
 </div> 
 
-```{r, layout="l-screen-inset", fig.height=7.5}
+```{r}
 # I want the home screen to contain an interactive map of Bangalore which shows all the projects proposed in the Comprehensive Mobility Plan for Bengaluru 2020. The map needs to have relevant boundaries (BBMP Ward, BMRDA) in addition to the projects. Also, projects will need to be categorized to make it easier to understand.
 
 # First, I will set up a base map with the BBMP ward boundaries.
@@ -53,17 +53,7 @@ bangaloreWardBoundary <- bangaloreWardBoundary %>%
 
 bangaloreCMPProjects <- readxl::read_xlsx(here::here("data/raw-data/bangaloreCMP2020Projetcs.xlsx"))
 
-# Rename columns for neater display
-
-bangaloreCMPProjects <- bangaloreCMPProjects %>% 
-  rename(ID = "id",
-         Type = "type",
-         Description = "description")
-
-# Rearrange columns so that I get the description in the pop-up
-
-bangaloreCMPProjects <- bangaloreCMPProjects %>% 
-  select(Description, ID, Type, location)
+# Okay. I tried working with all projects in one DF but its makes sense to split them by project type. Then I can make the pop-up info more useful.
 
 # Filter out the locations that are not geo-located yet
 
@@ -77,17 +67,93 @@ bangaloreCMPProjects <- bangaloreCMPProjects %>%
   st_as_sf(coords = c("lat", "lon"), crs = 4326) %>% 
   st_transform(3857)
 
-# Draw maps
+# I'll draw the base map here.
+
 
 mapBase <- tm_shape(bangaloreWardBoundary) +
   tm_borders(col = "#000000",
              lwd = 2)
 
-mapProjects <- bangaloreCMPProjects %>% 
-  group_by(Type) %>% 
-  tm_shape() +
-  tm_dots(col = "#000000",
-          labels = c("Description"))
 
-mapBase + mapProjects
+# Define a Palette
+
+myPalette <- c("#f94144",
+               "#f3722c",
+               "#f8961e",
+               "#f9844a",
+               "#f9c74f",
+               "#90be6d",
+               "#43aa8b",
+               "#4d908e",
+               "#577590",
+               "#277da1")
+
 ```
+
+```{r}
+# JUNCTION IMPROVEMENT PROJECTS
+
+# Filter only the junction improvement projects
+
+junctionImprovement <- bangaloreCMPProjects %>% 
+  filter(type == "Junction Improvement")
+
+# Rename columns for neater display
+
+junctionImprovement <- junctionImprovement %>%
+  select(-description_1, -description_2) %>% 
+  rename(ID = "id",
+         Type = "type",
+         Description = "description_0")
+
+# Rearrange columns so that I get the description in the pop-up
+
+junctionImprovement <- junctionImprovement %>% 
+  select(Description, ID, Type, geometry)
+
+# Draw Junction Improvement Map
+
+mapJunctionImprovement <- junctionImprovement %>% 
+  tm_shape() +
+  tm_dots(col = "#f94144",
+          popup.vars = c("ID", "Type", "Description"))
+
+```
+
+```{r}
+# OFF-STREET PARKING PROJECTS
+
+# Filter only the junction improvement projects
+
+offStreetParking <- bangaloreCMPProjects %>% 
+  filter(type == "Off-Street Parking")
+
+# Rename columns for neater display
+
+offStreetParking <- offStreetParking %>%
+  rename(ID = "id",
+         Type = "type",
+         Description = "description_0",
+         Area = "description_1",
+         Count = "description_2")
+
+# Rearrange columns so that I get the description in the pop-up
+
+offStreetParking <- offStreetParking %>% 
+  select(Description, ID, Type, Area, Count, geometry)
+
+# Draw Junction Improvement Map
+
+mapOffStreetParking <- offStreetParking %>% 
+  tm_shape() +
+  tm_dots(col = "#277da1",
+          popup.vars = c("ID", "Type", "Description", "Area", "Count"))
+
+```
+
+```{r, layout="l-screen-inset", fig.height=7.5}
+# Publish combined map
+
+mapBase + mapJunctionImprovement + mapOffStreetParking
+```
+
