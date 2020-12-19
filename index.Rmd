@@ -43,9 +43,45 @@ bangaloreWardBoundary <- read_sf(here::here("data/raw-data/bangaloreWardBoundary
 bangaloreWardBoundary <- bangaloreWardBoundary %>% 
   st_transform(3857)
 
-# Draw the map
+# Now load in the dataset for this map. To start with, its going to have just points.
 
-tm_shape(bangaloreWardBoundary) +
+bangaloreCMPProjects <- readxl::read_xlsx(here::here("data/raw-data/bangaloreCMP2020Projetcs.xlsx"))
+
+# Rename columns for neater display
+
+bangaloreCMPProjects <- bangaloreCMPProjects %>% 
+  rename(ID = "id",
+         Type = "type",
+         Description = "description")
+
+# Rearrange columns so that I get the description in the pop-up
+
+bangaloreCMPProjects <- bangaloreCMPProjects %>% 
+  select(Description, ID, Type, location)
+
+# Filter out the locations that are not geo-located yet
+
+bangaloreCMPProjects <- bangaloreCMPProjects %>% 
+  filter(!is.na(location)) %>% 
+  separate(location, sep = ", ", into = c("lon", "lat"))
+
+# Convert lat and long into geometry
+
+bangaloreCMPProjects <- bangaloreCMPProjects %>% 
+  st_as_sf(coords = c("lat", "lon"), crs = 4326) %>% 
+  st_transform(3857)
+
+# Draw maps
+
+mapBase <- tm_shape(bangaloreWardBoundary) +
   tm_borders(col = "#000000",
              lwd = 2)
+
+mapProjects <- bangaloreCMPProjects %>% 
+  group_by(Type) %>% 
+  tm_shape() +
+  tm_dots(col = "#000000",
+          labels = c("Description"))
+
+mapBase + mapProjects
 ```
