@@ -31,6 +31,12 @@ d-title {
 <!-- Use a HTML break to add a little white space between the title and the map -->
 <br>
 
+<!-- Add a disclaimer that this is still being edited. -->
+
+<div class="boxed">
+  This website is still a work-in-progress and may not show accurate or complete information!
+</div> 
+
 ```{r, layout="l-screen-inset", fig.height=7.5}
 # I want the home screen to contain an interactive map of Bangalore which shows all the projects proposed in the Comprehensive Mobility Plan for Bengaluru 2020. The map needs to have relevant boundaries (BBMP Ward, BMRDA) in addition to the projects. Also, projects will need to be categorized to make it easier to understand.
 

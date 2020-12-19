@@ -82,3 +82,9 @@ d-appendix {
   width: 100%;
   height: 2.5rem;            /* Footer height */
 }
+
+/* Disclaimer box*/
+
+.boxed {
+  border: 3px solid red;
+} 
