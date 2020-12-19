@@ -1,0 +1,51 @@
+---
+title: "Understanding the Comprehensive Mobility Plan for Bengaluru 2020"
+site: distill::distill_website
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# Learn more about creating websites with Distill at:
+# https://rstudio.github.io/distill/website.html
+
+# Learn more about publishing to GitHub Pages at:
+# https://rstudio.github.io/distill/publish_website.html#github-pages
+
+library(sf)
+library(tidyverse)
+library(tmap)
+
+tmap_mode("view")
+
+```
+
+```{css, echo=FALSE}
+
+d-title {
+  display:none;
+}
+
+```
+
+<!-- Use a HTML break to add a little white space between the title and the map -->
+<br>
+
+```{r, layout="l-screen-inset", fig.height=7.5}
+# I want the home screen to contain an interactive map of Bangalore which shows all the projects proposed in the Comprehensive Mobility Plan for Bengaluru 2020. The map needs to have relevant boundaries (BBMP Ward, BMRDA) in addition to the projects. Also, projects will need to be categorized to make it easier to understand.
+
+# First, I will set up a base map with the BBMP ward boundaries.
+
+bangaloreWardBoundary <- read_sf(here::here("data/raw-data/bangaloreWardBoundary.shp"))
+
+# Transform it for consistency
+
+bangaloreWardBoundary <- bangaloreWardBoundary %>% 
+  st_transform(3857)
+
+# Draw the map
+
+tm_shape(bangaloreWardBoundary) +
+  tm_borders(col = "#000000",
+             lwd = 2)
+```
