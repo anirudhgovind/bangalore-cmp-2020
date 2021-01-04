@@ -69,11 +69,9 @@ bangaloreCMPProjects <- bangaloreCMPProjects %>%
 
 # I'll draw the base map here.
 
-
 mapBase <- tm_shape(bangaloreWardBoundary) +
   tm_borders(col = "#000000",
              lwd = 2)
-
 
 # Define a Palette
 
@@ -151,9 +149,38 @@ mapOffStreetParking <- offStreetParking %>%
 
 ```
 
+```{r}
+# STATION AREA ACCESS PLAN PROJECTS
+
+# Filter only the station area access plan projects
+
+stationAreaAccess <- bangaloreCMPProjects %>% 
+  filter(type == "Station Area Access Plan")
+
+# Rename columns for neater display
+
+stationAreaAccess <- stationAreaAccess %>%
+  rename(ID = "id",
+         Type = "type",
+         Description = "description_0")
+
+# Rearrange columns so that I get the description in the pop-up
+
+stationAreaAccess <- stationAreaAccess %>% 
+  select(Description, ID, Type, geometry)
+
+# Draw Junction Improvement Map
+
+mapStationAreaAccess <- stationAreaAccess %>% 
+  tm_shape() +
+  tm_dots(col = "#f8961e",
+          popup.vars = c("ID", "Type", "Description"))
+
+```
+
 ```{r, layout="l-screen-inset", fig.height=7.5}
 # Publish combined map
 
-mapBase + mapJunctionImprovement + mapOffStreetParking
+mapBase + mapJunctionImprovement + mapOffStreetParking + mapStationAreaAccess
 ```
 
