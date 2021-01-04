@@ -12,6 +12,6 @@ navbar:
       href: about.html
     - text: "Analysis"
       menu:
-      - text: "Analysis-1"
-        href: about.html
+      - text: "Station Area Access Plans"
+        href: analysis-stationAreaAccessPlan.html
 output: distill::distill_article

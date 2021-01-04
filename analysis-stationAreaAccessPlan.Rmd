@@ -1,0 +1,133 @@
+---
+title: "Analysis: Station Area Access Plans"
+site: distill::distill_website
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# Learn more about creating websites with Distill at:
+# https://rstudio.github.io/distill/website.html
+
+# Learn more about publishing to GitHub Pages at:
+# https://rstudio.github.io/distill/publish_website.html#github-pages
+
+library(sf)
+library(tidyverse)
+library(tmap)
+
+tmap_mode("view")
+
+```
+
+```{css, echo=FALSE}
+
+d-title {
+  display:none;
+}
+
+```
+
+<!-- Use a HTML break to add a little white space between the title and the map -->
+<br>
+
+<!-- Add a disclaimer that this is still being edited. -->
+
+<div class="boxed">
+  This website is still a work-in-progress and may not show accurate or complete information!
+</div> 
+
+```{r}
+# For the analysis, I want to have a series of maps which will help me analyze what's going on. I want an overall map showing all the metro stations and then a series of facets showing the 1km buffer around each one. 
+
+# First, I will set up a base map with the BBMP ward boundaries.
+
+bangaloreWardBoundary <- read_sf(here::here("data/raw-data/bangaloreWardBoundary.shp"))
+
+# Transform it for consistency
+
+bangaloreWardBoundary <- bangaloreWardBoundary %>% 
+  st_transform(3857)
+
+# Now load in the dataset for this map. To start with, its going to have just points.
+
+bangaloreCMPProjects <- readxl::read_xlsx(here::here("data/raw-data/bangaloreCMP2020Projetcs.xlsx"))
+
+# Okay. I tried working with all projects in one DF but its makes sense to split them by project type. Then I can make the pop-up info more useful.
+
+# Filter out the locations that are not geo-located yet
+
+bangaloreCMPProjects <- bangaloreCMPProjects %>% 
+  filter(!is.na(location)) %>% 
+  separate(location, sep = ", ", into = c("lon", "lat"))
+
+# Convert lat and long into geometry
+
+bangaloreCMPProjects <- bangaloreCMPProjects %>% 
+  st_as_sf(coords = c("lat", "lon"), crs = 4326) %>% 
+  st_transform(3857)
+
+# I'll draw the base map here.
+
+mapBase <- tm_shape(bangaloreWardBoundary) +
+  tm_borders(col = "#000000",
+             lwd = 2)
+
+# Define a Palette
+
+myPalette <- c("#f94144",
+               "#f3722c",
+               "#f8961e",
+               "#f9844a",
+               "#f9c74f",
+               "#90be6d",
+               "#43aa8b",
+               "#4d908e",
+               "#577590",
+               "#277da1")
+
+```
+
+```{r}
+# STATION AREA ACCESS PLAN PROJECTS
+
+# Filter only the station area access plan projects
+
+stationAreaAccess <- bangaloreCMPProjects %>% 
+  filter(type == "Station Area Access Plan")
+
+# Rename columns for neater display
+
+stationAreaAccess <- stationAreaAccess %>%
+  rename(ID = "id",
+         Type = "type",
+         Description = "description_0")
+
+# Rearrange columns so that I get the description in the pop-up
+
+stationAreaAccess <- stationAreaAccess %>% 
+  select(Description, ID, Type, geometry)
+
+# Draw a 1km buffer around the stations
+
+stationAreaAccessBuffers <- stationAreaAccess %>% 
+  st_buffer(1000)
+
+# Draw Junction Improvement Map with Buffer
+
+mapStationAreaAccess <- stationAreaAccess %>% 
+  tm_shape() +
+  tm_dots(col = "#f8961e",
+          popup.vars = c("ID", "Type", "Description")) +
+  tm_shape(stationAreaAccessBuffers) +
+  tm_borders(col = "#000000",
+             lwd = 1.5)
+
+```
+
+```{r, layout="l-screen-inset", fig.height=7.5}
+# Publish combined map
+
+mapBase + mapStationAreaAccess
+```
+
