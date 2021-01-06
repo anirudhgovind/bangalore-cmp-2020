@@ -236,9 +236,8 @@ mapInterModalHubs <- interModalHubs %>%
 
 ```
 
-```{r, layout="l-screen-inset", fig.height=7.5}
+```{r, layout="l-screen-inset", fig.height= 6.75}
 # Publish combined map
 
 mapBase + mapJunctionImprovement + mapOffStreetParking + mapStationAreaAccess + mapInterModalHubs
 ```
-
