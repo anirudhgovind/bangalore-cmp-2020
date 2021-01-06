@@ -13,5 +13,4 @@ navbar:
     - text: "Analysis"
       menu:
       - text: "Station Area Access Plans"
-        href: analysis-stationAreaAccessPlan.html
 output: distill::distill_article

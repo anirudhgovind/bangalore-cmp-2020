@@ -31,12 +31,6 @@ d-title {
 <!-- Use a HTML break to add a little white space between the title and the map -->
 <br>
 
-<!-- Add a disclaimer that this is still being edited. -->
-
-<div class="boxed">
-  This website is still a work-in-progress and may not show accurate or complete information!
-</div> 
-
 ```{r}
 # I want the home screen to contain an interactive map of Bangalore which shows all the projects proposed in the Comprehensive Mobility Plan for Bengaluru 2020. The map needs to have relevant boundaries (BBMP Ward, BMRDA) in addition to the projects. Also, projects will need to be categorized to make it easier to understand.
 
@@ -44,9 +38,14 @@ d-title {
 
 bangaloreWardBoundary <- read_sf(here::here("data/raw-data/bangaloreWardBoundary.shp"))
 
+bangaloreWards <- readRDS(here::here("data/raw-data/bangaloreWardMap.rds"))
+
 # Transform it for consistency
 
 bangaloreWardBoundary <- bangaloreWardBoundary %>% 
+  st_transform(3857)
+
+bangaloreWards <- bangaloreWards %>% 
   st_transform(3857)
 
 # Now load in the dataset for this map. To start with, its going to have just points.
@@ -67,11 +66,14 @@ bangaloreCMPProjects <- bangaloreCMPProjects %>%
   st_as_sf(coords = c("lat", "lon"), crs = 4326) %>% 
   st_transform(3857)
 
-# I'll draw the base map here.
+# I'll draw the base map here. I want a thicker border for the overall outline of the wards and thinner lines showing individual wards.
 
 mapBase <- tm_shape(bangaloreWardBoundary) +
   tm_borders(col = "#000000",
-             lwd = 2)
+             lwd = 2) +
+  tm_shape(bangaloreWards) +
+  tm_borders(col = "#000000",
+             lwd = 0.5)
 
 # Define a Palette
 
@@ -87,6 +89,29 @@ myPalette <- c("#f94144",
                "#277da1")
 
 ```
+
+```{r}
+# STAT CALCULATION
+
+# I'd like to display counts about the total number of projects in the CMP and the number of projects that have been geo-referenced. It'll help show that things are still in progress and is also an indicator of the complexity of things.
+
+# Total projects should be a static amount as counted from the CMP
+
+
+# Georeferenced project count
+
+geoRefCount <- bangaloreCMPProjects %>% 
+  filter(!is.na(geometry)) %>% 
+  count() %>% 
+  st_set_geometry(NULL) %>% 
+  select(n)
+```
+
+<center>
+
+### `r geoRefCount` projects have been geo-referenced as of `r format(Sys.Date(), "%d %B, %Y")`
+
+</center>
 
 ```{r}
 # JUNCTION IMPROVEMENT PROJECTS
@@ -114,7 +139,9 @@ junctionImprovement <- junctionImprovement %>%
 mapJunctionImprovement <- junctionImprovement %>% 
   tm_shape() +
   tm_dots(col = "#f94144",
-          popup.vars = c("ID", "Type", "Description"))
+          popup.vars = c("ID", "Type", "Description")) + 
+	tm_legend(outside=TRUE)
+
 
 ```
 
@@ -145,7 +172,9 @@ offStreetParking <- offStreetParking %>%
 mapOffStreetParking <- offStreetParking %>% 
   tm_shape() +
   tm_dots(col = "#277da1",
-          popup.vars = c("ID", "Type", "Description", "Area", "Count"))
+          popup.vars = c("ID", "Type", "Description", "Area", "Count")) + 
+	tm_legend(outside=TRUE)
+
 
 ```
 
@@ -174,7 +203,9 @@ stationAreaAccess <- stationAreaAccess %>%
 mapStationAreaAccess <- stationAreaAccess %>% 
   tm_shape() +
   tm_dots(col = "#f8961e",
-          popup.vars = c("ID", "Type", "Description"))
+          popup.vars = c("ID", "Type", "Description")) + 
+	tm_legend(outside=TRUE)
+
 
 ```
 
