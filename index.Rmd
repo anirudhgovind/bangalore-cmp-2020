@@ -139,9 +139,7 @@ junctionImprovement <- junctionImprovement %>%
 mapJunctionImprovement <- junctionImprovement %>% 
   tm_shape() +
   tm_dots(col = "#f94144",
-          popup.vars = c("ID", "Type", "Description")) + 
-	tm_legend(outside=TRUE)
-
+          popup.vars = c("ID", "Type", "Description"))
 
 ```
 
@@ -172,9 +170,10 @@ offStreetParking <- offStreetParking %>%
 mapOffStreetParking <- offStreetParking %>% 
   tm_shape() +
   tm_dots(col = "#277da1",
-          popup.vars = c("ID", "Type", "Description", "Area", "Count")) + 
-	tm_legend(outside=TRUE)
-
+          size = 0.15,
+          alpha = 0.5,
+          border.alpha = 0,
+          popup.vars = c("ID", "Type", "Description", "Area", "Count"))
 
 ```
 
@@ -203,15 +202,43 @@ stationAreaAccess <- stationAreaAccess %>%
 mapStationAreaAccess <- stationAreaAccess %>% 
   tm_shape() +
   tm_dots(col = "#f8961e",
-          popup.vars = c("ID", "Type", "Description")) + 
-	tm_legend(outside=TRUE)
+          popup.vars = c("ID", "Type", "Description"))
 
+```
+
+```{r}
+# INTER MODAL INTERCHANGE HUB
+
+# Filter only the inter modal interchange hub projects
+
+interModalHubs <- bangaloreCMPProjects %>% 
+  filter(type == "Inter Modal Interchange Hub")
+
+# Rename columns for neater display
+
+interModalHubs <- interModalHubs %>% 
+  rename(ID = "id",
+         Type = "type",
+         Description = "description_0",
+         Interchange = "description_1")
+
+# Rearrange columns so that I get the description in the pop-up
+
+interModalHubs <- interModalHubs %>% 
+  select(Description, ID, Type, Interchange, geometry)
+
+# Draw interchange hub map
+
+mapInterModalHubs <- interModalHubs %>% 
+  tm_shape() +
+  tm_dots(col = "#90be6d",
+          popup.vars = c("ID", "Type", "Description", "Interchange"))
 
 ```
 
 ```{r, layout="l-screen-inset", fig.height=7.5}
 # Publish combined map
 
-mapBase + mapJunctionImprovement + mapOffStreetParking + mapStationAreaAccess
+mapBase + mapJunctionImprovement + mapOffStreetParking + mapStationAreaAccess + mapInterModalHubs
 ```
 

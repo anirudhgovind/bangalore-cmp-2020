@@ -6,10 +6,50 @@ title: "About"
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dui neque, aliquet non sapien at, blandit consequat ligula. Mauris ut libero enim. In elit odio, feugiat id gravida sed, mollis ut ante. Integer ut odio condimentum tortor mollis ornare nec sit amet diam. Curabitur ex metus, cursus quis consequat vel, rutrum quis libero. Praesent commodo eleifend erat, a feugiat felis pulvinar sed. Ut nunc sem, dictum in malesuada non, finibus sed sem. Quisque malesuada tellus dui, in tincidunt nulla rutrum eu.
+### tl;dr
 
-In eu velit ut lacus finibus ullamcorper sit amet pharetra magna. Suspendisse tempus tellus in urna tristique, lobortis tempus tellus vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Aliquam quis sem risus. Fusce iaculis diam eu nunc sodales, ultricies placerat leo vehicula. Sed congue hendrerit imperdiet. Mauris molestie ac ligula at volutpat. Aliquam consectetur tincidunt urna eget ornare. Quisque eu viverra turpis. Vestibulum et turpis non leo accumsan fringilla. Proin pharetra risus ut turpis semper, ac posuere nunc tempus. Curabitur eleifend eget elit at eleifend. Integer mattis velit quis nibh aliquam luctus. 
+The intent of this website is to leverage techniques of interactive data visualization, spatial analysis, and urban planning to better understand the [Comprehensive Mobility Plan for Bengaluru 2020](http://www.urbantransport.kar.gov.in/docs/CMP%20Bengaluru%20-%20Final%20Report.pdf).
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dui neque, aliquet non sapien at, blandit consequat ligula. Mauris ut libero enim. In elit odio, feugiat id gravida sed, mollis ut ante. Integer ut odio condimentum tortor mollis ornare nec sit amet diam. Curabitur ex metus, cursus quis consequat vel, rutrum quis libero. Praesent commodo eleifend erat, a feugiat felis pulvinar sed. Ut nunc sem, dictum in malesuada non, finibus sed sem. Quisque malesuada tellus dui, in tincidunt nulla rutrum eu.
+<hr>
 
-In eu velit ut lacus finibus ullamcorper sit amet pharetra magna. Suspendisse tempus tellus in urna tristique, lobortis tempus tellus vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Aliquam quis sem risus. Fusce iaculis diam eu nunc sodales, ultricies placerat leo vehicula. Sed congue hendrerit imperdiet. Mauris molestie ac ligula at volutpat. Aliquam consectetur tincidunt urna eget ornare. Quisque eu viverra turpis. Vestibulum et turpis non leo accumsan fringilla. Proin pharetra risus ut turpis semper, ac posuere nunc tempus. Curabitur eleifend eget elit at eleifend. Integer mattis velit quis nibh aliquam luctus. 
+### Context
+
+The Comprehensive Mobility Plan for Bengaluru 2020 (CMP 2020) document prepared by Bangalore Metro Rail Corporation Limited, Directorate of Urban Land Transport, Urban Development Dept., GoK, and Infrastructure Development Corporation (Karnataka) Limited, is described as "*...a coordinated effort to improve mobility in Bengaluru...*". Further, the comprehensive mobility plan is "*the first step in that direction to provide the overall framework for integrating various transport sub-systems and addressing the needs of various segments of the population*".
+
+The document defines "*efficient and sustainable transportation for all*" as its vision with it's mission being to "*build a multi-modal transport system for equitable mobility access and minimized negative externalities*". Three goals are also defined:
+
+"*Goal 1: Increase mode share of public transport in meeting transport demand*"
+
+"*Goal 2: Regain road infrastructure as a public good*"
+
+"*Goal 3: Reduce transport sector contribution to air pollution and GHG emissions*"
+
+To help achieve these goals, the document envisions a number of projects across three phases, over a span of 15 years. Understanding the interconnected-ness, interdependencies, and mutual impacts between and of projects becomes a complex affair. This website aims to smoothen this process of comprehension by translating the contents of the Comprehensive Mobility Plan for Bengaluru 2020 document into an interactive tool enabling a more holistic understanding of the proposals. 
+
+<hr>
+
+### Objectives
+
+This website looks to achieve the following objectives:
+
+1. Comprehensively geo-reference and map all proposals from the CMP 2020.
+
+2. Progressively analyze proposals from the CMP 2020 using techniques from spatial analysis and urban planning to better understand their intents and potential impacts.
+
+3. Communicate this analysis to a wide range of audiences leveraging techniques of interactive data visualization.
+
+### Caveats and Disclaimers
+
+It is important to make clear the following points:
+
+1. The intent of this website is to help further an understanding of the CMP 2020 and the proposals contained within it. Any errors in the accuracy of the information is unintentional.
+
+2. All content on this website is being prepared based on an understanding of the CMP 2020. No claims are being made of its accuracy nor is it being claimed that these are reflective of the positions of the relevant planning departments. 
+
+3. Geo-referenced locations are approximate and indicative. These will vary from what may be planned by relevant departments at a later date.
+
+4. Proposals shown in these maps will vary from what is being planned by the relevant departments.
+
+### Contact
+
+Get in touch with me through twitter at [_anirudhgovind](https://twitter.com/_anirudhgovind)
