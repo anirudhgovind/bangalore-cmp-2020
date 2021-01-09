@@ -26,7 +26,7 @@ Collaborative Mapping Site | [OpenStreetMap](www.openstreetmap.org) | Geodata to
 
 ## Software and Packages
 
-R is the primarily language used in all data management, geo-referencing and spatial analysis. A number of packages were used including the following:
+R is the primary language used in all data management, geo-referencing and spatial analysis. A number of packages were used including the following:
 
 Package | Purpose | Citation
 -|-|-
