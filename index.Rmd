@@ -66,15 +66,6 @@ bangaloreCMPProjects <- bangaloreCMPProjects %>%
   st_as_sf(coords = c("lat", "lon"), crs = 4326) %>% 
   st_transform(3857)
 
-# I'll draw the base map here. I want a thicker border for the overall outline of the wards and thinner lines showing individual wards.
-
-mapBase <- tm_shape(bangaloreWardBoundary) +
-  tm_borders(col = "#000000",
-             lwd = 2) +
-  tm_shape(bangaloreWards) +
-  tm_borders(col = "#000000",
-             lwd = 0.5)
-
 # Define a Palette
 
 myPalette <- c("#f94144",
@@ -87,6 +78,24 @@ myPalette <- c("#f94144",
                "#4d908e",
                "#577590",
                "#277da1")
+
+```
+
+```{r}
+# BASE MAP
+
+# The CMP 2020 defines the study area as the whole of Bengaluru Metropolitan Area (1294.00 Sq.Km), part of Bangalore-Mysore Infrastructure Corridor Area (79.14 Sq.Km) and a part of Bangalore International Airport Area Local Planning Authority (227.85 Sq.Km). BUT, I don't see a map which explicitly shows these areas. :/ 
+
+# Till I figure that out, I'll show the BBMP and metropolitan area boundaries.
+
+# I'll draw the base map here. I want a thicker border for the overall outline of the wards and thinner lines showing individual wards.
+
+mapBase <- tm_shape(bangaloreWardBoundary) +
+  tm_borders(col = "#000000",
+             lwd = 2) +
+  tm_shape(bangaloreWards) +
+  tm_borders(col = "#000000",
+             lwd = 0.5)
 
 ```
 
