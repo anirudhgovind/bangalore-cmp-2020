@@ -6,6 +6,15 @@ Data was manually georeferenced by the authors/ contributors. While efforts have
 
 ___
 
+## Changelog
+
+The table below provides information on the development of the project:
+
+Version | Date | Description
+-|-|-
+0.1 | 20210107 | Website published with 100 geo-referenced proposals.
+0.1 | 20210109 | Github repo made public after organization of files and folders. Raw data not made public yet.
+
 ## Data Sources
 
 The table below describes data used in this project:
