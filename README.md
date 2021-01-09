@@ -32,8 +32,7 @@ Package | Purpose | Citation
 -|-|-
 distill | Website creation | JJ Allaire, Rich Iannone, Alison Presmanes Hill and Yihui Xie (2020). distill: 'R Markdown' Format for Scientific and Technical Writing. R package version 1.1. https://CRAN.R-project.org/package=distill
 here | Accessing files | Kirill Müller (2020). here: A Simpler Way to Find Your Files. R package version 1.0.0. https://CRAN.R-project.org/package=here
-mapboxapi | Walkability analysis and drawing isochrones | Kyle Walker (2020). mapboxapi: R Interface to 'Mapbox' Web Services. R package version 0.2.
-  https://CRAN.R-project.org/package=mapboxapi
+mapboxapi | Walkability analysis and drawing isochrones | Kyle Walker (2020). mapboxapi: R Interface to 'Mapbox' Web Services. R package version 0.2. https://CRAN.R-project.org/package=mapboxapi
 osmdata | Downloading data from OpenStreetMaps | Mark Padgham, Bob Rudis, Robin Lovelace, Maëlle Salmon (2017). osmdata Journal of Open Source Software, 2(14). URL https://doi.org/10.21105/joss.00305
 sf | Dealing with spatial data and performing geometric operations | Pebesma, E., 2018. Simple Features for R: Standardized Support for Spatial Vector Data. The R Journal 10 (1), 439-446, https://doi.org/10.32614/RJ-2018-009
 Tidyverse | Data wrangling | Wickham et al., (2019). Welcome to the tidyverse. Journal of Open Source Software, 4(43), 1686, https://doi.org/10.21105/joss.01686
