@@ -21,7 +21,7 @@ The table below describes data used in this project:
 
 Type | Source | Description | Citation
 -|-|-|-
-Report | Comprehensive Mobility Plan for Bengaluru 2020 | All proposals were sourced from this document and subsequently geo-referenced and analysed by the author and contributors | Bengaluru Metro Rail Corporation Limited (BMRCL), Directorate of Urban Land Transport (DULT), Infrastructure Development Corporation (Karnataka) Limited, 2020, Comprehensive Mobility Plan for Bengaluru 2020
+Report | [Comprehensive Mobility Plan for Bengaluru 2020](http://www.urbantransport.kar.gov.in/docs/CMP%20Bengaluru%20-%20Final%20Report.pdf) | All proposals were sourced from this document and subsequently geo-referenced and analysed by the author and contributors | Bengaluru Metro Rail Corporation Limited (BMRCL), Directorate of Urban Land Transport (DULT), Infrastructure Development Corporation (Karnataka) Limited, 2020, Comprehensive Mobility Plan for Bengaluru 2020
 Collaborative Mapping Site | [OpenStreetMap](www.openstreetmap.org) | Geodata to aid in analysis, representation and visualisation | Map data copyrighted OpenStreetMap contributors and available from https://www.openstreetmap.org"
 
 ## Software and Packages
