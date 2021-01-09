@@ -247,7 +247,6 @@ The description of the SAAP projects defines the first objective as reducing the
 
 # I will calculate walking isochrones for each metro station.
 
-myToken <- "pk.eyJ1IjoiYW5pcnVkaGciLCJhIjoiY2s5aDByM2lpMHE1djNsand0NjBjOXUxbyJ9.YuNopw4wML-ctHaZGydmAA"
 # 
 # walkableIsochrones <- mb_isochrone(stationAreaAccess,
 #                                    profile = "walking",
