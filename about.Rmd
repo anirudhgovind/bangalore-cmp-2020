@@ -8,7 +8,9 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ### tl;dr
 
-The intent of this website is to leverage techniques of interactive data visualization, spatial analysis, and urban planning to better understand the [Comprehensive Mobility Plan for Bengaluru 2020](http://www.urbantransport.kar.gov.in/docs/CMP%20Bengaluru%20-%20Final%20Report.pdf).
+The intent of this website is to leverage techniques of interactive data visualization, spatial analysis, and urban planning to better understand the [Comprehensive Mobility Plan for Bengaluru 2020](http://www.urbantransport.kar.gov.in/docs/CMP%20Bengaluru%20-%20Final%20Report.pdf). 
+
+The website is intended to be a **living document** with updates taking place progressively and systematically. 
 
 <hr>
 
@@ -34,7 +36,7 @@ This website looks to achieve the following objectives:
 
 1. Comprehensively geo-reference and map all proposals from the CMP 2020.
 
-2. Progressively analyze proposals from the CMP 2020 using techniques from spatial analysis and urban planning to better understand their intents and potential impacts.
+2. **Progressively analyze proposals** from the CMP 2020 using techniques from spatial analysis and urban planning to better understand their intents and potential impacts.
 
 3. Communicate this analysis to a wide range of audiences leveraging techniques of interactive data visualization.
 
@@ -49,6 +51,8 @@ It is important to make clear the following points:
 3. Geo-referenced locations are approximate and indicative. These will vary from what may be planned by relevant departments at a later date.
 
 4. Proposals shown in these maps will vary from what is being planned by the relevant departments.
+
+5. The website is intended as a **living document**. Updates, in all forms, including but not limited to geo-referencing, analysis, and commentary will take place frequently and progressively. *Completed/ final/ finished* are stages that will rarely be reached.
 
 ### Contact
 

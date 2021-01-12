@@ -13,6 +13,7 @@ navbar:
     - text: "Analysis"
       menu:
       - text: "Station Area Access Plans"
+        href: analysis-stationAreaAccessPlan.html
     - icon: fab fa-twitter fa-1x
       href: https://twitter.com/_anirudhgovind
 output: distill::distill_article

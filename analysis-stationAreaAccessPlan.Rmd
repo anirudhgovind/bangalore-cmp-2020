@@ -46,6 +46,8 @@ d-title {
 
 # Metro Station Area Access Plans (SAAP)
 
+<p style="color:#e85d04;">**Status**: Analysis in Progress as of `r format(Sys.Date(), "%d %B, %Y")`</p>
+
 ## What the CMP Says
 
 "*Metro Station Area Access Plans (SAAP) are proposed to reduce the requirement for commuters to bring their personal vehicle or use public transport for their commute to and from metro stations. For each station, area of 1km radius will be covered under the SAAP to improve the road network to TenderSure specifications. It shall also assess the demand for park-and-ride, the last mile destinations (and distances), currently available last mile mode options etc. SAAP shall propose plans to integrate required last mile modes within the station area for passenger convenience. The SAAP shall also propose critical intervention areas to improve safety of pedestrians in station areas, identify bottleneck locations and suggest solutions to ease traffic movement. To begin with 4 terminal stations and 11 other stations in areas having high population density are proposed for implementing SAAP, and thereafter other stations are to be covered.*" (BMRCL et al., 2020, p. 4-42)

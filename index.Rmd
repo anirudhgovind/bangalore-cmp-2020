@@ -34,20 +34,6 @@ d-title {
 ```{r}
 # I want the home screen to contain an interactive map of Bangalore which shows all the projects proposed in the Comprehensive Mobility Plan for Bengaluru 2020. The map needs to have relevant boundaries (BBMP Ward, BMRDA) in addition to the projects. Also, projects will need to be categorized to make it easier to understand.
 
-# First, I will set up a base map with the BBMP ward boundaries.
-
-bangaloreWardBoundary <- read_sf(here::here("data/raw-data/bangaloreWardBoundary.shp"))
-
-bangaloreWards <- readRDS(here::here("data/raw-data/bangaloreWardMap.rds"))
-
-# Transform it for consistency
-
-bangaloreWardBoundary <- bangaloreWardBoundary %>% 
-  st_transform(3857)
-
-bangaloreWards <- bangaloreWards %>% 
-  st_transform(3857)
-
 # Now load in the dataset for this map. To start with, its going to have just points.
 
 bangaloreCMPProjects <- readxl::read_xlsx(here::here("data/raw-data/bangaloreCMP2020Projetcs.xlsx"))
@@ -88,6 +74,20 @@ myPalette <- c("#f94144",
 
 # Till I figure that out, I'll show the BBMP and metropolitan area boundaries.
 
+# First, I will set up a base map with the BBMP ward boundaries.
+
+bangaloreWardBoundary <- read_sf(here::here("data/raw-data/bangaloreWardBoundary.shp"))
+
+bangaloreWards <- readRDS(here::here("data/raw-data/bangaloreWardMap.rds"))
+
+# Transform it for consistency
+
+bangaloreWardBoundary <- bangaloreWardBoundary %>% 
+  st_transform(3857)
+
+bangaloreWards <- bangaloreWards %>% 
+  st_transform(3857)
+
 # I'll draw the base map here. I want a thicker border for the overall outline of the wards and thinner lines showing individual wards.
 
 mapBase <- tm_shape(bangaloreWardBoundary) +
@@ -115,12 +115,6 @@ geoRefCount <- bangaloreCMPProjects %>%
   st_set_geometry(NULL) %>% 
   select(n)
 ```
-
-<center>
-
-### `r geoRefCount` projects have been geo-referenced as of `r format(Sys.Date(), "%d %B, %Y")`
-
-</center>
 
 ```{r}
 # JUNCTION IMPROVEMENT PROJECTS
@@ -250,3 +244,9 @@ mapInterModalHubs <- interModalHubs %>%
 
 mapBase + mapJunctionImprovement + mapOffStreetParking + mapStationAreaAccess + mapInterModalHubs
 ```
+
+<center>
+
+### `r geoRefCount` projects have been geo-referenced as of `r format(Sys.Date(), "%d %B, %Y")`
+
+</center>
