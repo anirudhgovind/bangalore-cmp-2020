@@ -132,10 +132,10 @@ junctionImprovement <- junctionImprovement %>%
          Type = "type",
          Description = "description_0")
 
-# Rearrange columns so that I get the description in the pop-up
+# Rearrange columns so that I get the type in the pop-up
 
 junctionImprovement <- junctionImprovement %>% 
-  select(Description, ID, Type, geometry)
+  select(Type, Description, ID, geometry)
 
 # Draw Junction Improvement Map
 
@@ -163,10 +163,10 @@ offStreetParking <- offStreetParking %>%
          Area = "description_1",
          Count = "description_2")
 
-# Rearrange columns so that I get the description in the pop-up
+# Rearrange columns so that I get the type in the pop-up
 
 offStreetParking <- offStreetParking %>% 
-  select(Description, ID, Type, Area, Count, geometry)
+  select(Type, Description, ID, Area, Count, geometry)
 
 # Draw Junction Improvement Map
 
@@ -195,10 +195,10 @@ stationAreaAccess <- stationAreaAccess %>%
          Type = "type",
          Description = "description_0")
 
-# Rearrange columns so that I get the description in the pop-up
+# Rearrange columns so that I get the type in the pop-up
 
 stationAreaAccess <- stationAreaAccess %>% 
-  select(Description, ID, Type, geometry)
+  select(Type, Description, ID, geometry)
 
 # Draw Junction Improvement Map
 
@@ -225,10 +225,10 @@ interModalHubs <- interModalHubs %>%
          Description = "description_0",
          Interchange = "description_1")
 
-# Rearrange columns so that I get the description in the pop-up
+# Rearrange columns so that I get the type in the pop-up
 
 interModalHubs <- interModalHubs %>% 
-  select(Description, ID, Type, Interchange, geometry)
+  select(Type, Description, ID, Interchange, geometry)
 
 # Draw interchange hub map
 
