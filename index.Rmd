@@ -130,19 +130,20 @@ junctionImprovement <- junctionImprovement %>%
   select(-description_1, -description_2) %>% 
   rename(ID = "id",
          Type = "type",
-         Description = "description_0")
+         Description = "description_0",
+         Budget = "budget")
 
 # Rearrange columns so that I get the type in the pop-up
 
 junctionImprovement <- junctionImprovement %>% 
-  select(Type, Description, ID, geometry)
+  select(Type, Description, Budget, ID, geometry)
 
 # Draw Junction Improvement Map
 
 mapJunctionImprovement <- junctionImprovement %>% 
   tm_shape() +
   tm_dots(col = "#f94144",
-          popup.vars = c("ID", "Type", "Description"))
+          popup.vars = c("ID", "Type", "Description", "Budget"))
 
 ```
 
@@ -161,12 +162,13 @@ offStreetParking <- offStreetParking %>%
          Type = "type",
          Description = "description_0",
          Area = "description_1",
-         Count = "description_2")
+         Count = "description_2",
+         Budget = "budget")
 
 # Rearrange columns so that I get the type in the pop-up
 
 offStreetParking <- offStreetParking %>% 
-  select(Type, Description, ID, Area, Count, geometry)
+  select(Type, Description, ID, Area, Count, Budget, geometry)
 
 # Draw Junction Improvement Map
 
@@ -176,7 +178,7 @@ mapOffStreetParking <- offStreetParking %>%
           size = 0.15,
           alpha = 0.5,
           border.alpha = 0,
-          popup.vars = c("ID", "Type", "Description", "Area", "Count"))
+          popup.vars = c("ID", "Type", "Description", "Area", "Count", "Budget"))
 
 ```
 
@@ -193,19 +195,20 @@ stationAreaAccess <- bangaloreCMPProjects %>%
 stationAreaAccess <- stationAreaAccess %>%
   rename(ID = "id",
          Type = "type",
-         Description = "description_0")
+         Description = "description_0",
+         Budget = "budget")
 
 # Rearrange columns so that I get the type in the pop-up
 
 stationAreaAccess <- stationAreaAccess %>% 
-  select(Type, Description, ID, geometry)
+  select(Type, Description, ID, Budget, geometry)
 
 # Draw Junction Improvement Map
 
 mapStationAreaAccess <- stationAreaAccess %>% 
   tm_shape() +
   tm_dots(col = "#f8961e",
-          popup.vars = c("ID", "Type", "Description"))
+          popup.vars = c("ID", "Type", "Description", "Budget"))
 
 ```
 
@@ -223,19 +226,20 @@ interModalHubs <- interModalHubs %>%
   rename(ID = "id",
          Type = "type",
          Description = "description_0",
-         Interchange = "description_1")
+         Interchange = "description_1",
+         Budget = "budget")
 
 # Rearrange columns so that I get the type in the pop-up
 
 interModalHubs <- interModalHubs %>% 
-  select(Type, Description, ID, Interchange, geometry)
+  select(Type, Description, ID, Interchange, Budget, geometry)
 
 # Draw interchange hub map
 
 mapInterModalHubs <- interModalHubs %>% 
   tm_shape() +
   tm_dots(col = "#90be6d",
-          popup.vars = c("ID", "Type", "Description", "Interchange"))
+          popup.vars = c("ID", "Type", "Description", "Interchange", "Budget"))
 
 ```
 

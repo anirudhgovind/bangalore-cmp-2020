@@ -1,0 +1,28 @@
+---
+title: "Analysis: Budget Allocations"
+site: distill::distill_website
+output:
+  distill::distill_article:
+    toc: false
+    toc_depth: 4
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# Learn more about creating websites with Distill at:
+# https://rstudio.github.io/distill/website.html
+
+# Learn more about publishing to GitHub Pages at:
+# https://rstudio.github.io/distill/publish_website.html#github-pages
+
+library(mapboxapi)
+library(osmdata)
+library(sf)
+library(tidyverse)
+library(tmap)
+
+tmap_mode("view")
+
+```

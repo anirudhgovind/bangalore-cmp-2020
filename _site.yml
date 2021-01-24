@@ -12,6 +12,7 @@ navbar:
       href: about.html
     - text: "Analysis"
       menu:
+      - text: "Budget Allocations"
       - text: "Station Area Access Plans"
         href: analysis-stationAreaAccessPlan.html
     - icon: fab fa-twitter fa-1x
