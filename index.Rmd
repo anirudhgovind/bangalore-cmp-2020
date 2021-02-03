@@ -279,7 +279,6 @@ nonGeoRefCount <- nonGeoRefProjects %>%
 
 ```
 
-
 <center>
 
 ### `r nonGeoRefCount` projects are queued for geo-referencing as of `r format(Sys.Date(), "%d %B, %Y")`
@@ -287,8 +286,10 @@ nonGeoRefCount <- nonGeoRefProjects %>%
 </center>
 
 ```{r, layout="l-screen-inset", fig.height= 6.75}
+ 
+rmarkdown::paged_table(nonGeoRefProjects,
+                      options = list(rows.print = 20,
+                      cols.print = 7))
 
-rmarkdown::paged_table(nonGeoRefProjects, 
-                       options = list(rows.print = 20))
 ```
 

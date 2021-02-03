@@ -10,6 +10,7 @@ navbar:
       href: index.html
     - text: "About"
       href: about.html
+    - text: "Data"
     - text: "Analysis"
       menu:
       - text: "Budget Allocations"

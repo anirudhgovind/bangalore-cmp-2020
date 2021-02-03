@@ -12,7 +12,7 @@ The table below provides information on the development of the project:
 
 Version | Date | Description
 -|-|-
-0.1 | 20210203 | Add list of non-geo-referenced projects plus count. DB of projects to be updated.
+0.1 | 20210203 | Add list of non-geo-referenced projects plus count. Project database updated.
 0.1 | 20210112 | Linked to github repo. Draft SAAP analysis uploaded. Minor changes made to about and website appearance.
 0.1 | 20210109 | Github repo made public after organization of files and folders. Raw data not made public yet.
 0.1 | 20210107 | Website published with 100 geo-referenced proposals.
