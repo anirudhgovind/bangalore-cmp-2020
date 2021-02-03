@@ -42,13 +42,13 @@ bangaloreCMPProjects <- readxl::read_xlsx(here::here("data/raw-data/bangaloreCMP
 
 # Filter out the locations that are not geo-located yet
 
-bangaloreCMPProjects <- bangaloreCMPProjects %>% 
+geoRefProjects <- bangaloreCMPProjects %>% 
   filter(!is.na(location)) %>% 
   separate(location, sep = ", ", into = c("lon", "lat"))
 
 # Convert lat and long into geometry
 
-bangaloreCMPProjects <- bangaloreCMPProjects %>% 
+geoRefProjects <- geoRefProjects %>% 
   st_as_sf(coords = c("lat", "lon"), crs = 4326) %>% 
   st_transform(3857)
 
@@ -100,28 +100,11 @@ mapBase <- tm_shape(bangaloreWardBoundary) +
 ```
 
 ```{r}
-# STAT CALCULATION
-
-# I'd like to display counts about the total number of projects in the CMP and the number of projects that have been geo-referenced. It'll help show that things are still in progress and is also an indicator of the complexity of things.
-
-# Total projects should be a static amount as counted from the CMP
-
-
-# Georeferenced project count
-
-geoRefCount <- bangaloreCMPProjects %>% 
-  filter(!is.na(geometry)) %>% 
-  count() %>% 
-  st_set_geometry(NULL) %>% 
-  select(n)
-```
-
-```{r}
 # JUNCTION IMPROVEMENT PROJECTS
 
 # Filter only the junction improvement projects
 
-junctionImprovement <- bangaloreCMPProjects %>% 
+junctionImprovement <- geoRefProjects %>% 
   filter(type == "Junction Improvement")
 
 # Rename columns for neater display
@@ -152,7 +135,7 @@ mapJunctionImprovement <- junctionImprovement %>%
 
 # Filter only the junction improvement projects
 
-offStreetParking <- bangaloreCMPProjects %>% 
+offStreetParking <- geoRefProjects %>% 
   filter(type == "Off-Street Parking")
 
 # Rename columns for neater display
@@ -187,7 +170,7 @@ mapOffStreetParking <- offStreetParking %>%
 
 # Filter only the station area access plan projects
 
-stationAreaAccess <- bangaloreCMPProjects %>% 
+stationAreaAccess <- geoRefProjects %>% 
   filter(type == "Station Area Access Plan")
 
 # Rename columns for neater display
@@ -217,7 +200,7 @@ mapStationAreaAccess <- stationAreaAccess %>%
 
 # Filter only the inter modal interchange hub projects
 
-interModalHubs <- bangaloreCMPProjects %>% 
+interModalHubs <- geoRefProjects %>% 
   filter(type == "Inter Modal Interchange Hub")
 
 # Rename columns for neater display
@@ -249,8 +232,63 @@ mapInterModalHubs <- interModalHubs %>%
 mapBase + mapJunctionImprovement + mapOffStreetParking + mapStationAreaAccess + mapInterModalHubs
 ```
 
+```{r}
+# STAT CALCULATION
+
+# I'd like to display counts about the total number of projects in the CMP and the number of projects that have been geo-referenced. It'll help show that things are still in progress and is also an indicator of the complexity of things.
+
+# Total projects should be a static amount as counted from the CMP
+
+
+# Georeferenced project count
+
+geoRefCount <- geoRefProjects %>% 
+  count() %>% 
+  st_set_geometry(NULL) %>% 
+  select(n)
+```
+
 <center>
 
 ### `r geoRefCount` projects have been geo-referenced as of `r format(Sys.Date(), "%d %B, %Y")`
 
 </center>
+
+---
+
+```{r}
+# I want a table to display the non-georefed projects
+
+nonGeoRefProjects <- bangaloreCMPProjects %>% 
+  filter(is.na(location)) %>% 
+  select(-location)
+
+nonGeoRefProjects <- nonGeoRefProjects %>% 
+  rename(ID = "id",
+         Type = "type",
+         Description0 = "description_0",
+         Description1 = "description_1",
+         Description2 = "description_2",
+         Budget = "budget")
+
+# I also want to show the count of non-georefed projects
+
+nonGeoRefCount <- nonGeoRefProjects %>% 
+  count() %>% 
+  select(n)
+
+```
+
+
+<center>
+
+### `r nonGeoRefCount` projects are queued for geo-referencing as of `r format(Sys.Date(), "%d %B, %Y")`
+
+</center>
+
+```{r, layout="l-screen-inset", fig.height= 6.75}
+
+rmarkdown::paged_table(nonGeoRefProjects, 
+                       options = list(rows.print = 20))
+```
+
