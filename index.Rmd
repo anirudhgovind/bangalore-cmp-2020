@@ -114,19 +114,19 @@ junctionImprovement <- junctionImprovement %>%
   rename(ID = "id",
          Type = "type",
          Description = "description_0",
-         Budget = "budget")
+         `Budget(in Cr.)` = "budget")
 
 # Rearrange columns so that I get the type in the pop-up
 
 junctionImprovement <- junctionImprovement %>% 
-  select(Type, Description, Budget, ID, geometry)
+  select(Type, Description, `Budget(in Cr.)`, ID, geometry)
 
 # Draw Junction Improvement Map
 
 mapJunctionImprovement <- junctionImprovement %>% 
   tm_shape() +
   tm_dots(col = "#f94144",
-          popup.vars = c("ID", "Type", "Description", "Budget"))
+          popup.vars = c("ID", "Type", "Description", "Budget(in Cr.)"))
 
 ```
 
@@ -146,12 +146,12 @@ offStreetParking <- offStreetParking %>%
          Description = "description_0",
          Area = "description_1",
          Count = "description_2",
-         Budget = "budget")
+         `Budget(in Cr.)` = "budget")
 
 # Rearrange columns so that I get the type in the pop-up
 
 offStreetParking <- offStreetParking %>% 
-  select(Type, Description, ID, Area, Count, Budget, geometry)
+  select(Type, Description, ID, Area, Count, `Budget(in Cr.)`, geometry)
 
 # Draw Junction Improvement Map
 
@@ -161,7 +161,7 @@ mapOffStreetParking <- offStreetParking %>%
           size = 0.15,
           alpha = 0.5,
           border.alpha = 0,
-          popup.vars = c("ID", "Type", "Description", "Area", "Count", "Budget"))
+          popup.vars = c("ID", "Type", "Description", "Area", "Count", "Budget(in Cr.)"))
 
 ```
 
@@ -179,19 +179,19 @@ stationAreaAccess <- stationAreaAccess %>%
   rename(ID = "id",
          Type = "type",
          Description = "description_0",
-         Budget = "budget")
+         `Budget(in Cr.)` = "budget")
 
 # Rearrange columns so that I get the type in the pop-up
 
 stationAreaAccess <- stationAreaAccess %>% 
-  select(Type, Description, ID, Budget, geometry)
+  select(Type, Description, ID, `Budget(in Cr.)`, geometry)
 
 # Draw Junction Improvement Map
 
 mapStationAreaAccess <- stationAreaAccess %>% 
   tm_shape() +
   tm_dots(col = "#f8961e",
-          popup.vars = c("ID", "Type", "Description", "Budget"))
+          popup.vars = c("ID", "Type", "Description", "Budget(in Cr.)"))
 
 ```
 
@@ -210,26 +210,61 @@ interModalHubs <- interModalHubs %>%
          Type = "type",
          Description = "description_0",
          Interchange = "description_1",
-         Budget = "budget")
+         `Budget(in Cr.)` = "budget")
 
 # Rearrange columns so that I get the type in the pop-up
 
 interModalHubs <- interModalHubs %>% 
-  select(Type, Description, ID, Interchange, Budget, geometry)
+  select(Type, Description, ID, Interchange, `Budget(in Cr.)`, geometry)
 
 # Draw interchange hub map
 
 mapInterModalHubs <- interModalHubs %>% 
   tm_shape() +
   tm_dots(col = "#90be6d",
-          popup.vars = c("ID", "Type", "Description", "Interchange", "Budget"))
+          popup.vars = c("ID", "Type", "Description", "Interchange", "Budget(in Cr.)"))
+
+```
+
+```{r}
+# FOOT-OVER-BRIDGES
+
+# Filter only the foot-over-bridge projects
+
+footOverBridges <- geoRefProjects %>% 
+  filter(type == "Foot-Over-Bridges")
+
+# Rename columns for neater display
+
+footOverBridges <- footOverBridges %>% 
+  rename(ID = "id",
+         Type = "type",
+         Description = "description_0",
+         Interchange = "description_1",
+         `Budget(in Cr.)` = "budget")
+
+# Rearrange columns so that I get the type in the pop-up
+
+footOverBridges <- footOverBridges %>% 
+  select(Type, Description, ID, Interchange, `Budget(in Cr.)`, geometry)
+
+# Draw foot-over-bridges
+
+mapFootOverBridges <- footOverBridges %>% 
+  tm_shape() +
+  tm_dots(col = "#f9c74f",
+          size = 0.15,
+          alpha = 0.5,
+          border.alpha = 0,
+          popup.vars = c("ID", "Type", "Description", "Interchange", "Budget(in Cr.)"))
 
 ```
 
 ```{r, layout="l-screen-inset", fig.height= 6.75}
 # Publish combined map
 
-mapBase + mapJunctionImprovement + mapOffStreetParking + mapStationAreaAccess + mapInterModalHubs
+mapBase + mapJunctionImprovement + mapOffStreetParking + mapStationAreaAccess + mapInterModalHubs + mapFootOverBridges
+
 ```
 
 ```{r}

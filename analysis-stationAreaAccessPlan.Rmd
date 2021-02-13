@@ -179,6 +179,31 @@ mapMetroRoutes <- tm_shape(metroRoutes) +
 ```
 
 ```{r}
+# I also want the metro stations to be more prominent on the maps
+
+# Station Buildings
+# 
+# query <- getbb("Bangalore") %>%
+#   opq() %>%
+#   add_osm_feature("building", "train_station")
+# 
+# str(query)
+# 
+# bangaloreStationBuildings <- osmdata_sf(query)
+# 
+# bangaloreStationBuildings <- bangaloreStationBuildings$osm_polygons
+# 
+# saveRDS(bangaloreStationBuildings, here::here("data/raw-data/bangaloreStationBuildings.rds"))
+
+bangaloreStationBuildings <- readRDS(here::here("data/raw-data/bangaloreStationBuildings.rds"))
+
+bangaloreStationBuildings <- bangaloreStationBuildings %>% 
+  select(osm_id, geometry) %>% 
+  st_transform(3857)
+
+```
+
+```{r}
 # STATION AREA ACCESS PLAN PROJECTS
 
 # Filter only the station area access plan projects
@@ -212,6 +237,13 @@ mapStationAreaAccess <- stationAreaAccess %>%
   tm_dots(col = "color",
           popup.vars = c("ID", "Type", "Description"))
 
+# stationAreaAccess %>%
+#   st_buffer(300) %>% 
+#   st_intersection(bangaloreStationBuildings) %>% 
+#   tm_shape() +
+#   tm_fill(col = "color",
+#           popup.vars = c("ID", "Type", "Description"))
+
 ```
 
 ```{r, layout="l-screen-inset", fig.height=6.75}
@@ -243,7 +275,7 @@ mapStationAreaBuffers <- stationAreaAccessBuffers %>%
 mapBase + mapMetroRoutes + mapStationAreaAccess + mapStationAreaBuffers
 ```
 
-The description of the SAAP projects defines the first objective as reducing the need for commuters to bring their vehicles or use public transport in their commute to and from metro stations. This leaves on-demand shared mobility services, shuttles, and walking as options. For now, let's focus on walking. It is generally accepted that people are comfortable walking 500m. For an adult, this would take about 6 minutes. While a circle with a radius of 500m is often drawn to indicate the walkable distance, it is more useful to look at a route-based walkable distance; this helps exclude private property and inaccessible areas. The maps below identify these walkable areas. Additionally, areas accessible in 10 minutes and 15 minutes (the-fifteen-minute-city) are also shown.
+The description of the SAAP projects defines the first objective as reducing the need for commuters to bring their vehicles or use public transport in their commute to and from metro stations. This leaves on-demand shared mobility services, shuttles, and walking as options. For now, let's focus on walking. It is generally accepted that people are comfortable walking 500m. For an adult, this would take about 6 minutes. While a circle with a radius of 500m is often drawn to indicate the walkable distance, it is more useful to look at a route-based walkable distance; this helps exclude private property and inaccessible areas. The map below identifies these walkable areas. Additionally, areas accessible in 10 minutes and 15 minutes (the-fifteen-minute-city) are also shown.
 
 ```{r, layout="l-screen-inset", fig.height=6.75}
 
@@ -285,10 +317,10 @@ Use the links in the table to navigate to specific sections.
 Link | Stations Included
 -|-
 [Group 1](#group-1) | Nagasandra Station, Dasarahalli Station, Peenya Industry Station, Peenya Station
-[Group 2](#group-1) | Yeshwantpur Station, Sandal Soap Factory Station,  Mahalakshmi Station, Rajajinagar Station, Mahakavi Kuvempu Road Station,  Sriramapura Station, Sampige Mantri Square Station
-[Group 3](#group-1) | Nayandanahalli Station
-[Group 4](#group-1) | Yellachanahalli Station
-[Group 5](#group-1) | Baiyapannahalli Station
+[Group 2](#group-2) | Yeshwantpur Station, Sandal Soap Factory Station,  Mahalakshmi Station, Rajajinagar Station, Mahakavi Kuvempu Road Station,  Sriramapura Station, Sampige Mantri Square Station
+[Group 3](#group-3) | Nayandanahalli Station
+[Group 4](#group-4) | Yellachanahalli Station
+[Group 5](#group-5) | Baiyapannahalli Station
 
 ```{r, layout="l-screen-inset", fig.height=6.75}
 
@@ -333,6 +365,20 @@ bangaloreRoadsIsochrone <- st_intersection(bangaloreRoadsBuffer, walkableIsochro
 
 ```
 
+```{r}
+# Load data and wrangle it. I'll look at how far it is to walk to bus stations from each of the metro stations.
+
+bangaloreBusStops <- readRDS(here::here("data/raw-data/bangaloreBusStops.rds"))
+
+bangaloreBusStops <- bangaloreBusStops$osm_points
+
+bangaloreBusStops <- bangaloreBusStops %>% 
+  select(osm_id, name, geometry) %>% 
+  rename(OSM_ID = "osm_id",
+         Name = "name") %>% 
+  st_transform(3857)
+```
+
 ### Group 1 {#group-1}
 
 ```{r, layout="l-screen-inset", fig.height=6.75}
@@ -341,8 +387,10 @@ bangaloreRoadsIsochrone <- st_intersection(bangaloreRoadsBuffer, walkableIsochro
 mapStationAreaAccessG1 <- stationAreaAccess %>% 
   filter(Group == 1) %>% 
   tm_shape() +
-  tm_dots(col = "color",
-          popup.vars = c("ID", "Type", "Description"))
+  tm_symbols(col = "color",
+             border.col = "#000000",
+             border.lwd = 4,
+             popup.vars = c("ID", "Type", "Description"))
 
 mapStationAreaBuffersG1 <- stationAreaAccessBuffers %>% 
   filter(Group == 1) %>% 
@@ -368,6 +416,32 @@ mapStationAreaBuffersG1 + mapWalkingTimeG1 + mapStationAreaAccessG1 + mapMetroRo
 
 ```
 
+Within the one-kilometer radius buffers are a number of bus stops. The map below shows the location of these stops and the time it would take to walk to the metro station from them. Three of the four stations have bus stops within a 6 minute walk of them.
+
+```{r}
+# Overlay bus stops on these maps
+
+mapBusStopsG1 <- stationAreaAccessBuffers %>% 
+  filter(Group == 1) %>%
+  st_intersection(bangaloreBusStops) %>% 
+  select(Name, OSM_ID, geometry) %>% 
+  tm_shape() +
+  tm_symbols(shape = 21, 
+             col = "#880d1e",
+             border.col = "#000000",
+             border.lwd = 3,
+             size = 0.2,
+             popup.vars = c("OSM_ID", "Name"))
+
+```
+
+```{r, layout="l-screen-inset", fig.height=6.75}
+# Map with bus stops
+
+mapStationAreaBuffersG1 + mapWalkingTimeG1 + mapStationAreaAccessG1 + mapMetroRoutes + mapBusStopsG1
+
+```
+
 ### Group 2 {#group-2}
 
 ```{r, layout="l-screen-inset", fig.height=6.75}
@@ -376,8 +450,10 @@ mapStationAreaBuffersG1 + mapWalkingTimeG1 + mapStationAreaAccessG1 + mapMetroRo
 mapStationAreaAccessG2 <- stationAreaAccess %>% 
   filter(Group == 2) %>% 
   tm_shape() +
-  tm_dots(col = "color",
-          popup.vars = c("ID", "Type", "Description"))
+  tm_symbols(col = "color",
+             border.col = "#000000",
+             border.lwd = 4,
+             popup.vars = c("ID", "Type", "Description"))
 
 mapStationAreaBuffersG2 <- stationAreaAccessBuffers %>% 
   filter(Group == 2) %>% 
@@ -403,6 +479,29 @@ mapStationAreaBuffersG2 + mapWalkingTimeG2 + mapStationAreaAccessG2 + mapMetroRo
 
 ```
 
+```{r}
+# Overlay bus stops on these maps
+
+mapBusStopsG2 <- stationAreaAccessBuffers %>% 
+  filter(Group == 2) %>%
+  st_intersection(bangaloreBusStops) %>% 
+  select(Name, OSM_ID, geometry) %>% 
+  tm_shape() +
+  tm_symbols(col = "#880d1e",
+             border.col = "#000000",
+             border.lwd = 3,
+             size = 0.2,
+             popup.vars = c("OSM_ID", "Name"))
+
+```
+
+```{r, layout="l-screen-inset", fig.height=6.75}
+# Map with bus stops
+
+mapStationAreaBuffersG2 + mapWalkingTimeG2 + mapStationAreaAccessG2 + mapMetroRoutes + mapBusStopsG2
+
+```
+
 ### Group 3 {#group-3}
 
 ```{r, layout="l-screen-inset", fig.height=6.75}
@@ -411,8 +510,10 @@ mapStationAreaBuffersG2 + mapWalkingTimeG2 + mapStationAreaAccessG2 + mapMetroRo
 mapStationAreaAccessG3 <- stationAreaAccess %>% 
   filter(Group == 3) %>% 
   tm_shape() +
-  tm_dots(col = "color",
-          popup.vars = c("ID", "Type", "Description"))
+  tm_symbols(col = "color",
+             border.col = "#000000",
+             border.lwd = 4,
+             popup.vars = c("ID", "Type", "Description"))
 
 mapStationAreaBuffersG3 <- stationAreaAccessBuffers %>% 
   filter(Group == 3) %>% 
@@ -438,6 +539,29 @@ mapWalkingTimeG3 + mapStationAreaBuffersG3 + mapStationAreaAccessG3 + mapMetroRo
 
 ```
 
+```{r}
+# Overlay bus stops on these maps
+
+mapBusStopsG3 <- stationAreaAccessBuffers %>% 
+  filter(Group == 3) %>%
+  st_intersection(bangaloreBusStops) %>% 
+  select(Name, OSM_ID, geometry) %>% 
+  tm_shape() +
+  tm_symbols(col = "#880d1e",
+             border.col = "#000000",
+             border.lwd = 3,
+             size = 0.2,
+             popup.vars = c("OSM_ID", "Name"))
+
+```
+
+```{r, layout="l-screen-inset", fig.height=6.75}
+# Map with bus stops
+
+mapStationAreaBuffersG3 + mapWalkingTimeG3 + mapStationAreaAccessG3 + mapMetroRoutes + mapBusStopsG3
+
+```
+
 ### Group 4 {#group-4}
 
 ```{r, layout="l-screen-inset", fig.height=6.75}
@@ -446,8 +570,10 @@ mapWalkingTimeG3 + mapStationAreaBuffersG3 + mapStationAreaAccessG3 + mapMetroRo
 mapStationAreaAccessG4 <- stationAreaAccess %>% 
   filter(Group == 4) %>% 
   tm_shape() +
-  tm_dots(col = "color",
-          popup.vars = c("ID", "Type", "Description"))
+  tm_symbols(col = "color",
+             border.col = "#000000",
+             border.lwd = 4,
+             popup.vars = c("ID", "Type", "Description"))
 
 mapStationAreaBuffersG4 <- stationAreaAccessBuffers %>% 
   filter(Group == 4) %>% 
@@ -473,6 +599,29 @@ mapStationAreaBuffersG4 + mapWalkingTimeG4 + mapStationAreaAccessG4 + mapMetroRo
 
 ```
 
+```{r}
+# Overlay bus stops on these maps
+
+mapBusStopsG4 <- stationAreaAccessBuffers %>% 
+  filter(Group == 4) %>%
+  st_intersection(bangaloreBusStops) %>% 
+  select(Name, OSM_ID, geometry) %>% 
+  tm_shape() +
+  tm_symbols(col = "#880d1e",
+             border.col = "#000000",
+             border.lwd = 3,
+             size = 0.2,
+             popup.vars = c("OSM_ID", "Name"))
+
+```
+
+```{r, layout="l-screen-inset", fig.height=6.75}
+# Map with bus stops
+
+mapStationAreaBuffersG4 + mapWalkingTimeG4 + mapStationAreaAccessG4 + mapMetroRoutes + mapBusStopsG4
+
+```
+
 ### Group 5 {#group-5}
 
 ```{r, layout="l-screen-inset", fig.height=6.75}
@@ -481,8 +630,10 @@ mapStationAreaBuffersG4 + mapWalkingTimeG4 + mapStationAreaAccessG4 + mapMetroRo
 mapStationAreaAccessG5 <- stationAreaAccess %>% 
   filter(Group == 5) %>% 
   tm_shape() +
-  tm_dots(col = "color",
-          popup.vars = c("ID", "Type", "Description"))
+  tm_symbols(col = "color",
+             border.col = "#000000",
+             border.lwd = 4,
+             popup.vars = c("ID", "Type", "Description"))
 
 mapStationAreaBuffersG5 <- stationAreaAccessBuffers %>% 
   filter(Group == 5) %>% 
@@ -508,7 +659,30 @@ mapStationAreaBuffersG5 + mapWalkingTimeG5 + mapStationAreaAccessG5 + mapMetroRo
 
 ```
 
-#### Impact of other CMP 2020 Proposals (TBD)
+```{r}
+# Overlay bus stops on these maps
+
+mapBusStopsG5 <- stationAreaAccessBuffers %>% 
+  filter(Group == 5) %>%
+  st_intersection(bangaloreBusStops) %>%
+  select(Name, OSM_ID, geometry) %>% 
+  tm_shape() +
+  tm_symbols(col = "#880d1e",
+             border.col = "#000000",
+             border.lwd = 3,
+             size = 0.2,
+             popup.vars = c("OSM_ID", "Name"))
+
+```
+
+```{r, layout="l-screen-inset", fig.height=6.75}
+# Map with bus stops
+
+mapStationAreaBuffersG5 + mapWalkingTimeG5 + mapStationAreaAccessG5 + mapMetroRoutes + mapBusStopsG5
+
+```
+
+## Impact of other CMP 2020 Proposals (TBD)
 
 Other projects from the CMP 2020 that are within these one-kilometer radius buffer areas are shown in the map below. (Note: This will change as the geo-referencing process continues. More projects *may* be included.)
 
