@@ -304,7 +304,8 @@ nonGeoRefProjects <- nonGeoRefProjects %>%
          Description0 = "description_0",
          Description1 = "description_1",
          Description2 = "description_2",
-         Budget = "budget")
+         `Budget(in Cr.)` = "budget") %>% 
+  select(ID, Type, Description0, `Budget(in Cr.)`)
 
 # I also want to show the count of non-georefed projects
 
@@ -313,6 +314,7 @@ nonGeoRefCount <- nonGeoRefProjects %>%
   select(n)
 
 ```
+
 
 <center>
 
