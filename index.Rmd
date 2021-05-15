@@ -36,7 +36,7 @@ d-title {
 
 # Now load in the dataset for this map. To start with, its going to have just points.
 
-bangaloreCMPProjects <- readxl::read_xlsx(here::here("data/raw-data/bangaloreCMP2020Projetcs.xlsx"))
+bangaloreCMPProjects <- readxl::read_xlsx(here::here("data/raw-data/bangaloreCMP2020Projects.xlsx"))
 
 # Okay. I tried working with all projects in one DF but its makes sense to split them by project type. Then I can make the pop-up info more useful.
 
@@ -100,171 +100,34 @@ mapBase <- tm_shape(bangaloreWardBoundary) +
 ```
 
 ```{r}
-# JUNCTION IMPROVEMENT PROJECTS
+# Clean-up variables
 
-# Filter only the junction improvement projects
-
-junctionImprovement <- geoRefProjects %>% 
-  filter(type == "Junction Improvement")
-
-# Rename columns for neater display
-
-junctionImprovement <- junctionImprovement %>%
-  select(-description_1, -description_2) %>% 
+geoRefProjects <- geoRefProjects %>% 
   rename(ID = "id",
          Type = "type",
          Description = "description_0",
          `Budget(in Cr.)` = "budget")
 
-# Rearrange columns so that I get the type in the pop-up
+# Re-order variables
 
-junctionImprovement <- junctionImprovement %>% 
-  select(Type, Description, `Budget(in Cr.)`, ID, geometry)
-
-# Draw Junction Improvement Map
-
-mapJunctionImprovement <- junctionImprovement %>% 
-  tm_shape() +
-  tm_dots(col = "#f94144",
-          popup.vars = c("ID", "Type", "Description", "Budget(in Cr.)"))
-
-```
-
-```{r}
-# OFF-STREET PARKING PROJECTS
-
-# Filter only the junction improvement projects
-
-offStreetParking <- geoRefProjects %>% 
-  filter(type == "Off-Street Parking")
-
-# Rename columns for neater display
-
-offStreetParking <- offStreetParking %>%
-  rename(ID = "id",
-         Type = "type",
-         Description = "description_0",
-         Area = "description_1",
-         Count = "description_2",
-         `Budget(in Cr.)` = "budget")
-
-# Rearrange columns so that I get the type in the pop-up
-
-offStreetParking <- offStreetParking %>% 
-  select(Type, Description, ID, Area, Count, `Budget(in Cr.)`, geometry)
-
-# Draw Junction Improvement Map
-
-mapOffStreetParking <- offStreetParking %>% 
-  tm_shape() +
-  tm_dots(col = "#277da1",
-          size = 0.15,
-          alpha = 0.5,
-          border.alpha = 0,
-          popup.vars = c("ID", "Type", "Description", "Area", "Count", "Budget(in Cr.)"))
-
-```
-
-```{r}
-# STATION AREA ACCESS PLAN PROJECTS
-
-# Filter only the station area access plan projects
-
-stationAreaAccess <- geoRefProjects %>% 
-  filter(type == "Station Area Access Plan")
-
-# Rename columns for neater display
-
-stationAreaAccess <- stationAreaAccess %>%
-  rename(ID = "id",
-         Type = "type",
-         Description = "description_0",
-         `Budget(in Cr.)` = "budget")
-
-# Rearrange columns so that I get the type in the pop-up
-
-stationAreaAccess <- stationAreaAccess %>% 
-  select(Type, Description, ID, `Budget(in Cr.)`, geometry)
-
-# Draw Junction Improvement Map
-
-mapStationAreaAccess <- stationAreaAccess %>% 
-  tm_shape() +
-  tm_dots(col = "#f8961e",
-          popup.vars = c("ID", "Type", "Description", "Budget(in Cr.)"))
-
-```
-
-```{r}
-# INTER MODAL INTERCHANGE HUB
-
-# Filter only the inter modal interchange hub projects
-
-interModalHubs <- geoRefProjects %>% 
-  filter(type == "Inter Modal Interchange Hub")
-
-# Rename columns for neater display
-
-interModalHubs <- interModalHubs %>% 
-  rename(ID = "id",
-         Type = "type",
-         Description = "description_0",
-         Interchange = "description_1",
-         `Budget(in Cr.)` = "budget")
-
-# Rearrange columns so that I get the type in the pop-up
-
-interModalHubs <- interModalHubs %>% 
-  select(Type, Description, ID, Interchange, `Budget(in Cr.)`, geometry)
-
-# Draw interchange hub map
-
-mapInterModalHubs <- interModalHubs %>% 
-  tm_shape() +
-  tm_dots(col = "#90be6d",
-          popup.vars = c("ID", "Type", "Description", "Interchange", "Budget(in Cr.)"))
-
-```
-
-```{r}
-# FOOT-OVER-BRIDGES
-
-# Filter only the foot-over-bridge projects
-
-footOverBridges <- geoRefProjects %>% 
-  filter(type == "Foot-Over-Bridges")
-
-# Rename columns for neater display
-
-footOverBridges <- footOverBridges %>% 
-  rename(ID = "id",
-         Type = "type",
-         Description = "description_0",
-         Interchange = "description_1",
-         `Budget(in Cr.)` = "budget")
-
-# Rearrange columns so that I get the type in the pop-up
-
-footOverBridges <- footOverBridges %>% 
-  select(Type, Description, ID, Interchange, `Budget(in Cr.)`, geometry)
-
-# Draw foot-over-bridges
-
-mapFootOverBridges <- footOverBridges %>% 
-  tm_shape() +
-  tm_dots(col = "#f9c74f",
-          size = 0.15,
-          alpha = 0.5,
-          border.alpha = 0,
-          popup.vars = c("ID", "Type", "Description", "Interchange", "Budget(in Cr.)"))
+geoRefProjects <- geoRefProjects %>% 
+  select(Type, ID, Description, `Budget(in Cr.)`)
 
 ```
 
 ```{r, layout="l-screen-inset", fig.height= 6.75}
-# Publish combined map
+# Create map viz
 
-mapBase + mapJunctionImprovement + mapOffStreetParking + mapStationAreaAccess + mapInterModalHubs + mapFootOverBridges
-
+mapBase +
+  geoRefProjects %>% 
+  tm_shape() +
+  tm_dots(col = "Type",
+          border.col = "Black",
+          size = 0.2,
+          alpha = 0.9,
+          palette = "Greys",
+          popup.vars = c("ID", "Type", "Description", "Budget(in Cr.)")) +
+  tm_view(view.legend.position = c("left", "bottom"))
 ```
 
 ```{r}

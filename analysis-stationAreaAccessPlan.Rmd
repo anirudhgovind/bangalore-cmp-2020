@@ -20,6 +20,7 @@ knitr::opts_chunk$set(echo = FALSE)
 library(mapboxapi)
 library(osmdata)
 library(sf)
+library(sfnetworks)
 library(tidyverse)
 library(tmap)
 
@@ -89,7 +90,7 @@ bangaloreWardBoundary <- bangaloreWardBoundary %>%
 
 # Now load in the dataset for this map. To start with, its going to have just points.
 
-bangaloreCMPProjects <- readxl::read_xlsx(here::here("data/raw-data/bangaloreCMP2020Projetcs.xlsx"))
+bangaloreCMPProjects <- readxl::read_xlsx(here::here("data/raw-data/bangaloreCMP2020Projects.xlsx"))
 
 # Filter out the locations that are not geo-located yet
 
