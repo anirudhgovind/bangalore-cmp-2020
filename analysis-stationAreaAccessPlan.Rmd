@@ -24,6 +24,7 @@ library(sfnetworks)
 library(tidyverse)
 library(tmap)
 
+tmap_options(check.and.fix = TRUE)
 tmap_mode("view")
 
 ```

@@ -17,7 +17,7 @@ Version | Date | Description
 0.1 | 20210109 | Github repo made public after organization of files and folders. Raw data not made public yet.
 0.1 | 20210107 | Website published with 100 geo-referenced proposals.
 0.1 | 20210515 | Refactor code across website + some geo-referencing
-
+0.1 | 20211125 | Revive Project + some geo-referencing!
 
 ## Data Sources
 
